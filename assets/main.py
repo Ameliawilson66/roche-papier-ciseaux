@@ -13,7 +13,7 @@ import arcade
 #import arcade.gui
 
 #from attack_animation import AttackType, AttackAnimation
-from game_state import GameState
+from game_state import Game_State
 
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 600
@@ -64,7 +64,20 @@ class MyGame(arcade.Window):
        # C'est ici que vous allez créer vos listes de sprites et vos sprites.
        # Prenez note que vous devriez attribuer une valeur à tous les attributs créés dans __init__
 
-       pass
+       self.player = arcade.Sprite(':assets/faceBeard.png', 1)
+       self.player.center_x = 300
+       self.player.center_y = 600
+
+       self.computer = arcade.Sprite(':assets/compy.png', 1)
+       self.computer.center_x = 500
+       self.computer.center_y = 800
+
+       self.players = arcade.SpriteList()
+
+       self.players.append(self.player)
+       self.players.append(self.computer)
+
+       self.players.draw()
 
 
 
@@ -73,7 +86,38 @@ class MyGame(arcade.Window):
        Utilisé pour déterminer qui obtient la victoire (ou s'il y a égalité)
        Rappel: après avoir validé la victoire, il faut changer l'état de jeu
        """
+       if self.player_attack_type == 0 and self.computer_attack_type == 1:
+           print("l'ordinateur à gagné!")
+           self.computer_score += 1
 
+       if self.player_attack_type == 1 and self.computer_attack_type == 2:
+           print("l'ordinateur à gagné!")
+           self.computer_score += 1
+
+       if self.player_attack_type == 2 and self.computer_attack_type == 0:
+           print("l'ordinateur à gagné!")
+           self.computer_score += 1
+
+       if self.player_attack_type == 0 and self.computer_attack_type == 2:
+           print("le joueur à gagné!")
+           self.player_score += 1
+
+       if self.player_attack_type == 1 and self.computer_attack_type == 0:
+           print("le joueur à gagné!")
+           self.player_score += 1
+
+       if self.player_attack_type == 2 and self.computer_attack_type == 1:
+           print("le joueur à gagné!")
+           self.player_score += 1
+
+       if self.player_attack_type == 0 and self.computer_attack_type == 0:
+           print("c'est égalité!")
+
+       if self.player_attack_type == 1 and self.computer_attack_type == 1:
+           print("c'est égalité!")
+
+       if self.player_attack_type == 2 and self.computer_attack_type == 2:
+           print("c'est égalité!")
 
    def draw_possible_attack(self):
        """
@@ -161,13 +205,14 @@ class MyGame(arcade.Window):
        """
        Réinitialiser les variables qui ont été modifiées
        """
-       #self.computer_attack_type = -1
-       #self.player_attack_chosen = False
-       #self.player_attack_type = {AttackType.ROCK: False, AttackType.PAPER: False, AttackType.SCISSORS: False}
-       #self.player_won_round = False
-       #self.draw_round = False
+       self.computer_attack_type = -1
+       self.player_attack_chosen = False
+       self.player_attack_type = {AttackType.ROCK: False, AttackType.PAPER: False, AttackType.SCISSORS: False}
+       self.player_won_round = False
+       self.draw_round = False
 
-       pass
+       if (self.game_state == game_state.GameState.ROUND_DONE and key == arcade.key.SPACE):
+           self.game_state = game_state.GameState.ROUND_ACTIVE
 
    def on_mouse_press(self, x, y, button, key_modifiers):
        """
