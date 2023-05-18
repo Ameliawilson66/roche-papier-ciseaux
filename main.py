@@ -64,6 +64,10 @@ class MyGame(arcade.Window):
        # C'est ici que vous allez créer vos listes de sprites et vos sprites.
        # Prenez note que vous devriez attribuer une valeur à tous les attributs créés dans __init__
 
+       self.game_state = Game_State.NOT_STARTED
+
+
+
        self.player = arcade.Sprite(':assets/faceBeard.png', 1)
        self.player.center_x = 300
        self.player.center_y = 600
@@ -71,6 +75,13 @@ class MyGame(arcade.Window):
        self.computer = arcade.Sprite(':assets/compy.png', 1)
        self.computer.center_x = 500
        self.computer.center_y = 800
+
+       self.rock = attack_animation(attack_type.ROCK, center_x = 600, center_y = 200)
+       self.paper = attack_animation(attack_type.PAPER, center_x = 300, center_y = 200)
+       self.scissors = attack_animation(attack_type.SCISSORS, center_x = 100, center_y = 200)
+
+
+
 
        self.players = arcade.SpriteList()
 
@@ -200,6 +211,13 @@ class MyGame(arcade.Window):
        """
        if (self.game_state == game_state.GameState.NOT_STARTED and key == arcade.key.SPACE):
            self.game_state = game_state.GameState.ROUND_ACTIVE
+
+       if arcade.key.SPACE:
+           if self.game_state == Game_State.ROUND_DONE:
+               self.game_state = Game_State.ROUND_ACTIVE
+
+           if self.game_state == Game_State.GAME_OVER:
+               self.setup()
 
    def reset_round(self):
        """
