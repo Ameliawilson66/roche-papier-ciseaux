@@ -66,7 +66,8 @@ class MyGame(arcade.Window):
 
        self.game_state = Game_State.NOT_STARTED
 
-
+       self.computer_score = 0
+       self.player_score = 0
 
        self.player = arcade.Sprite(':assets/faceBeard.png', 1)
        self.player.center_x = 300
@@ -79,9 +80,6 @@ class MyGame(arcade.Window):
        self.rock = attack_animation(attack_type.ROCK, center_x = 600, center_y = 200)
        self.paper = attack_animation(attack_type.PAPER, center_x = 300, center_y = 200)
        self.scissors = attack_animation(attack_type.SCISSORS, center_x = 100, center_y = 200)
-
-
-
 
        self.players = arcade.SpriteList()
 
@@ -166,9 +164,10 @@ class MyGame(arcade.Window):
        # Cette commande permet d'effacer l'écran avant de dessiner. Elle va dessiner l'arrière
        # plan selon la couleur spécifié avec la méthode "set_background_color".
        arcade.start_render()
-
+       arcade.set_background_color(arcade.color.LIGHT_GRAY)
        # Display title
-       arcade.draw_text(SCREEN_TITLE,
+       if self.game_state == Game_State.NOT_STARTED:
+           arcade.draw_text(SCREEN_TITLE,
                         0,
                         SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 2,
                         arcade.color.BLACK_BEAN,
@@ -183,7 +182,10 @@ class MyGame(arcade.Window):
 
        #afficher l'attaque de l'ordinateur selon l'état de jeu
        #afficher le résultat de la partie si l'ordinateur a joué (ROUND_DONE)
-       pass
+
+       if self.game_state == Game_State.ROUND_ACTIVE:
+           arcade.draw_text('APPUYEZ SUR UNE IMAGE POUR FAIRE UNE ATTAQUE', 90, 470, arcade.color.BLACK_OLIVE, )
+
 
    def on_update(self, delta_time):
        """
